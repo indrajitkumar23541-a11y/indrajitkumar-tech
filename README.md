@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# INDRA OS — Personal Developer Operating System
 
-## Getting Started
+> **Personal AI-powered developer operating system and portfolio for Indrajit Kumar, featuring the ARXON Intelligence Core.**
 
-First, run the development server:
+[![Next.js](https://img.shields.io/badge/Next.js-16.3-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+[![DSA](https://img.shields.io/badge/DSA-380%2B_Solved-FFA116?style=for-the-badge&logo=leetcode)](https://leetcode.com/)
+
+---
+
+## ⚡ Overview
+
+**INDRA OS** is not a conventional static developer portfolio. It is designed as a personal developer operating system inspired by aerospace HUD telemetry, dark engineering control systems, and AI-assisted interfaces.
+
+* **Owner & Architect:** Indrajit Kumar
+* **Primary Identity:** Full-Stack Developer · AI Builder · Systems Explorer
+* **Education:** Bachelor of Technology in Computer Science & Engineering (2023–2027)
+* **Algorithmic Rigor:** 380+ DSA Problems Solved in Modern C++
+
+---
+
+## 🔮 Core Features
+
+### 1. ARXON — Personal Intelligence Core
+Integrated zero-hallucination personal AI assistant strictly grounded in verified single-source-of-truth project data, featuring interactive holographic canvas visualization, stateful lifecycle feedback, and optional synthetic voice narration.
+
+### 2. Project Constellation Radar
+A spatial 2D orbital telemetry view mapping projects across concentric orbital tiers:
+* **Orbit 1 (Center Core):** INDRA OS (Personal Developer Operating System)
+* **Orbit 2:** PraGo (Telemedicine Healthcare Platform) & KLYRO (High-Performance E-Commerce)
+* **Orbit 3:** ARXON AI (Personal Intelligence Core) & Velocity X (3D Physics Sandbox)
+* **Orbit 4:** Astraview (Orbital Ephemeris HUD)
+
+### 3. Procedural Web Audio Synthesizer
+Zero-dependency, browser-native audio synthesis via the **Web Audio API** producing subtle aerospace micro-clicks, confirmation chimes, and boot resonance without external audio files.
+
+### 4. Cinematic Boot Sequence
+An authentic diagnostic boot sequence overlay with progress metrics, typewriter logs, and instant `[ESC]` bypass.
+
+### 5. Command Center (`⌘K` / `/`)
+Full-featured command palette supporting instant navigation, search, case study inspection, and recruiter mode.
+
+---
+
+## 🛠️ Tech Stack & Architecture
+
+* **Framework:** Next.js (App Router), React, TypeScript
+* **Styling & Tokens:** Tailwind CSS v4, Vanilla CSS Custom Tokens
+  * Background Primary: `#050608`
+  * Surface: `#0D1218`
+  * Brand Accent: **INDRA Gold** (`#FFB000`)
+  * AI Accent: **AI Cyan** (`#00E5FF`)
+* **Audio:** Web Audio API (Synthesized procedural oscillators)
+* **Icons:** Lucide React & Handcrafted SVGs
+* **Animations:** Hardware-accelerated CSS keyframes & Framer Motion
+
+---
+
+## 🚀 Getting Started
 
 ```bash
+# Clone the repository
+git clone https://github.com/indrajitkumar23541-a11y/indrajitkumar-tech.git
+
+# Navigate into project directory
+cd indrajitkumar-tech
+
+# Install dependencies
+npm install
+
+# Start local development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 👤 Author & Maintainer
 
-## Learn More
+**Indrajit Kumar**
+* GitHub: [@indrajitkumar](https://github.com/indrajitkumar)
+* LinkedIn: [Indrajit Kumar](https://linkedin.com/in/indrajitkumar)
+* LeetCode: [380+ Solved](https://leetcode.com)
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📄 License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the [MIT License](LICENSE).
