@@ -927,7 +927,7 @@ Prefer:
 
 ```text
 Used in:
-KLYRO
+Indra-MarketMind
 PraGo
 Arxon AI
 ```
@@ -1076,7 +1076,7 @@ Example:
         ↓
 SKILL
 
-"Tell me about KLYRO."
+"Tell me about Indra-MarketMind."
         ↓
 PROJECT
 

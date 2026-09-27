@@ -14,7 +14,7 @@ export const systemCommands: SystemCommand[] = [
   {
     id: "nav-projects",
     name: "Access Project Universe",
-    description: "Explore engineering case studies (PraGo, KLYRO, ARXON, INDRA OS)",
+    description: "Explore engineering case studies (PraGo, Indra-MarketMind, Yaadon Ki Duniya, INDRA OS)",
     category: "navigation",
     shortcut: ["G", "P"],
     actionType: "navigate",

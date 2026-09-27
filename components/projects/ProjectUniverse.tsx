@@ -18,11 +18,12 @@ export function ProjectUniverse({ onSelectProject }: ProjectUniverseProps) {
   const orbitingProjects = projectsData.filter((p) => p.id !== centerProject.id);
 
   const nodePositions = [
-    { project: orbitingProjects[0], r: 110, angle: 45 },
-    { project: orbitingProjects[1], r: 110, angle: 220 },
-    { project: orbitingProjects[2], r: 190, angle: 120 },
-    { project: orbitingProjects[3], r: 190, angle: 300 },
-    { project: orbitingProjects[4], r: 260, angle: 180 },
+    { project: orbitingProjects[0], r: 110, angle: 35 },
+    { project: orbitingProjects[1], r: 110, angle: 215 },
+    { project: orbitingProjects[2], r: 185, angle: 105 },
+    { project: orbitingProjects[3], r: 185, angle: 285 },
+    { project: orbitingProjects[4], r: 255, angle: 165 },
+    { project: orbitingProjects[5], r: 255, angle: 345 },
   ];
 
   return (

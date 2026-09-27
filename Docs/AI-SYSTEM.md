@@ -92,7 +92,7 @@ Allow users to control the website through natural language.
 
 Examples:
 
-> "Open KLYRO."
+> "Open Indra-MarketMind."
 
 > "Take me to contact."
 
@@ -108,7 +108,7 @@ Explain projects and technical concepts in simple language.
 
 Example:
 
-> "Explain KLYRO like I'm a recruiter."
+> "Explain Indra-MarketMind like I'm a recruiter."
 
 ---
 
@@ -118,7 +118,7 @@ Provide deeper explanations for technical visitors.
 
 Example:
 
-> "Explain KLYRO's microservice architecture."
+> "Explain Indra-MarketMind's sentiment pipeline architecture."
 
 ---
 
@@ -244,7 +244,7 @@ Supported commands may include:
 
 ```text
 Show projects
-Open KLYRO
+Open Indra-MarketMind
 Go to contact
 Show skills
 Open GitHub
@@ -745,7 +745,7 @@ Example:
 /home
 /projects
 /projects/prago
-/projects/klyro
+/projects/indra-marketmind
 /about
 /contact
 ```
@@ -823,7 +823,7 @@ Responses should be concise and professional.
 
 Example:
 
-> "Indrajit is a B.Tech CSE student focused on full-stack development and AI-integrated applications. His portfolio includes projects such as PraGo, KLYRO, and Arxon AI."
+> "Indrajit is a B.Tech CSE student focused on full-stack development and AI-integrated applications. His portfolio includes projects such as PraGo, Indra-MarketMind, Yaadon Ki Duniya, and Arxon AI."
 
 Only verified facts may be used.
 
@@ -1123,14 +1123,14 @@ ARXON may use current UI context.
 
 Example:
 
-If the user is viewing KLYRO and asks:
+If the user is viewing Indra-MarketMind and asks:
 
 > "What database does it use?"
 
 ARXON should interpret:
 
 ```text
-currentProject = klyro
+currentProject = indra-marketmind
 question = database
 ```
 
@@ -1323,7 +1323,7 @@ Examples:
 ```text
 Who is Indrajit?
 What technologies does he use?
-What is KLYRO?
+What is Indra-MarketMind?
 ```
 
 Do not cache user-specific sensitive information.
@@ -1398,12 +1398,12 @@ Example:
 
 ```json
 {
-  "message": "Opening KLYRO.",
+  "message": "Opening Indra-MarketMind.",
   "intent": "OPEN_PROJECT",
   "actions": [
     {
       "type": "OPEN_PROJECT",
-      "projectSlug": "klyro"
+      "projectSlug": "indra-marketmind"
     }
   ],
   "state": "NAVIGATING"
@@ -1638,16 +1638,16 @@ Project matching should tolerate reasonable variations.
 Examples:
 
 ```text
-klyro
-klyro ecommerce
-KLYRO
-klyro project
+indra-marketmind
+marketmind sentiment
+Indra-MarketMind
+marketmind project
 ```
 
 should resolve to:
 
 ```text
-klyro
+indra-marketmind
 ```
 
 But ambiguous matches must ask for clarification.
@@ -1769,11 +1769,11 @@ SHOW_PROJECTS
 
 ### User
 
-> Explain KLYRO.
+> Explain Indra-MarketMind.
 
 ### ARXON
 
-> KLYRO is an e-commerce platform built around a React/Vite frontend and Node.js/Express backend architecture, with MySQL and separate service boundaries. I can also walk you through its architecture.
+> Indra-MarketMind is an AI-powered financial market sentiment platform built with Next.js 14, FastAPI, FinBERT, and WebSockets. I can also walk you through its architecture.
 
 ---
 
@@ -2454,11 +2454,11 @@ Example:
 
 User:
 
-> Explain KLYRO.
+> Explain Indra-MarketMind.
 
 ARXON:
 
-> KLYRO is...
+> Indra-MarketMind is...
 
 User:
 

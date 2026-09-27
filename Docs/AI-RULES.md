@@ -1541,7 +1541,7 @@ Prefer readable routes:
 ```text
 /projects
 /projects/prago
-/projects/klyro
+/projects/indra-marketmind
 /about
 /contact
 ```

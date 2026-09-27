@@ -28,9 +28,9 @@ Integrated zero-hallucination personal AI assistant strictly grounded in verifie
 ### 2. Project Constellation Radar
 A spatial 2D orbital telemetry view mapping projects across concentric orbital tiers:
 * **Orbit 1 (Center Core):** INDRA OS (Personal Developer Operating System)
-* **Orbit 2:** PraGo (Telemedicine Healthcare Platform) & KLYRO (High-Performance E-Commerce)
-* **Orbit 3:** ARXON AI (Personal Intelligence Core) & Velocity X (3D Physics Sandbox)
-* **Orbit 4:** Astraview (Orbital Ephemeris HUD)
+* **Orbit 2:** PraGo (Telemedicine Healthcare Platform) & Indra-MarketMind (AI Financial Sentiment Intelligence)
+* **Orbit 3:** Yaadon Ki Duniya (Nostalgic Indian Audio Experience) & ARXON AI (Personal Intelligence Core)
+* **Orbit 4:** Velocity X (3D Physics Sandbox) & Astraview (Orbital Ephemeris HUD)
 
 ### 3. Procedural Web Audio Synthesizer
 Zero-dependency, browser-native audio synthesis via the **Web Audio API** producing subtle aerospace micro-clicks, confirmation chimes, and boot resonance without external audio files.

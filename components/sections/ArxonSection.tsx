@@ -30,10 +30,10 @@ export function ArxonSection() {
 
   const presetQueries = [
     "What are Indrajit's primary technical competencies?",
+    "Tell me about Indra-MarketMind sentiment AI",
+    "Tell me about Yaadon Ki Duniya",
     "Tell me about the PraGo telemedicine platform",
-    "What is Indrajit's DSA & competitive coding track record?",
-    "What degree is Indrajit pursuing?",
-    "How can I contact Indrajit?",
+    "What is Indrajit's DSA track record?",
   ];
 
   const speakText = useCallback(
@@ -79,10 +79,12 @@ export function ArxonSection() {
           reply = `Indrajit is pursuing a Bachelor of Technology (B.Tech) in Computer Science and Engineering (2023 – 2027), maintaining a rigorous focus on Computer Science foundations, Distributed Systems, and Operating Systems.`;
         } else if (lower.includes("contact") || lower.includes("email") || lower.includes("hire") || lower.includes("reach")) {
           reply = `You can establish connection with Indrajit directly via email at ${profileData.socials.email.url.replace("mailto:", "")}, or connect professionally on LinkedIn (${profileData.socials.linkedin.url}) and GitHub (${profileData.socials.github.url}).`;
-        } else if (lower.includes("klyro") || lower.includes("commerce")) {
-          reply = `KLYRO is a high-performance e-commerce platform built by Indrajit using Next.js, React, Node.js, and Tailwind CSS, featuring sub-second catalog filtering, optimistic cart state, and transactional order workflows.`;
+        } else if (lower.includes("marketmind") || lower.includes("sentiment") || lower.includes("stock") || lower.includes("financial")) {
+          reply = `Indra-MarketMind is an AI-powered financial market sentiment intelligence platform built with Next.js 14, Python (FastAPI), FinBERT, and WebSockets. It correlates real-time news sentiment with stock price volatility to emit predictive trading trend signals.`;
+        } else if (lower.includes("yaadon") || lower.includes("nostalgia") || lower.includes("duniya") || lower.includes("sound")) {
+          reply = `Yaadon Ki Duniya is an immersive nostalgic web experience bringing vintage Indian memories to life through curated ambient audio soundscapes, retro radio aesthetics, and Web Audio API spatial synthesis.`;
         } else {
-          reply = `Command received. Indrajit Kumar is a Full-Stack Developer & AI Builder (B.Tech CSE 2023–2027) with 380+ DSA problems solved. For details on any project or skill, ask about PraGo, KLYRO, INDRA OS, or DSA.`;
+          reply = `Command received. Indrajit Kumar is a Full-Stack Developer & AI Builder (B.Tech CSE 2023–2027) with 380+ DSA problems solved. For details on any project or skill, ask about PraGo, Indra-MarketMind, Yaadon Ki Duniya, INDRA OS, or DSA.`;
         }
 
         sound.playPulse();

@@ -133,67 +133,133 @@ export const projectsData: Project[] = [
     },
   },
   {
-    id: "klyro",
-    name: "KLYRO",
-    codename: "COMMERCE_FLOW",
-    tagline: "High-Performance Modern E-Commerce & Inventory Infrastructure",
+    id: "indra-marketmind",
+    name: "Indra-MarketMind",
+    codename: "SENTIMENT_RADAR",
+    tagline: "AI-Powered Market Sentiment Intelligence Platform",
     description:
-      "Scalable e-commerce web platform engineered for responsive product exploration, secure transactional checkout, dynamic cart synchronization, and inventory tracking.",
-    category: "Full-Stack Platforms",
-    status: "COMPLETED",
+      "Correlating live financial news sentiment with stock price volatility to emit real-time market trend signals and predictive financial indicators.",
+    category: "AI Systems",
+    status: "ACTIVE",
     featured: true,
-    technologies: ["React", "Next.js", "Node.js", "Tailwind CSS", "MongoDB/MySQL", "Stripe API"],
-    role: "Full-Stack Developer",
-    year: "2025",
+    technologies: ["Python", "FastAPI", "React", "Next.js", "Transformers / NLP", "Tailwind CSS", "Financial APIs", "WebSocket"],
+    role: "Lead AI & Full-Stack Architect",
+    year: "2026",
     links: {
-      github: "https://github.com/indrajitkumar/klyro",
-      live: "#",
+      github: "https://github.com/indrajitkumar23541-a11y/Indra-MarketMind",
+      live: "https://github.com/indrajitkumar23541-a11y/Indra-MarketMind",
+      demo: "#",
     },
     metrics: [
-      { label: "Performance", value: "Sub-second Page Load" },
-      { label: "Checkout", value: "Secured Gateway" },
-      { label: "Catalog", value: "Dynamic Filtering" },
+      { label: "Domain", value: "Financial NLP & AI" },
+      { label: "Signal Pipeline", value: "Sentiment vs Volatility" },
+      { label: "Architecture", value: "FastAPI & Next.js" },
     ],
     caseStudy: {
       overview:
-        "KLYRO was developed to master modern full-stack commerce requirements: product catalogs, optimistic cart state, payment gateway reconciliation, and reliable order histories.",
+        "Indra-MarketMind is an AI intelligence platform engineered to bridge the gap between financial news velocity and quantitative price volatility. By analyzing streaming news sentiment using NLP pipelines and cross-referencing market fluctuations, it generates actionable market trend signals.",
       problem:
-        "High churn in e-commerce occurs when product discovery is sluggish and checkout flows experience state desynchronization.",
+        "Retail traders and quantitative analysts are overwhelmed by massive financial news streams. Manual sentiment extraction is too slow, while isolated price charts ignore underlying market narrative shifts.",
       goal:
-        "Build a clean, high-performance marketplace platform featuring immediate client-side filtering, instant search, and atomic order creation.",
+        "Construct an autonomous sentiment-volatility correlation engine capable of ingesting financial news feeds, computing real-time polarity/confidence scores, and emitting predictive volatility alerts.",
       solution:
-        "Engineered an optimized React client backed by Node.js REST services with client-side caching and resilient cart persistence.",
+        "Engineered a low-latency pipeline with FastAPI and Next.js, processing news streams through fine-tuned financial transformer models and charting synchronized sentiment curves against ticker volatility.",
       architectureLayers: [
         {
-          layer: "Storefront UI",
-          components: ["Catalog Grid", "Facet Filters", "Optimistic Shopping Bag", "Checkout Modal"],
+          layer: "Presentation & Visual HUD",
+          components: ["Sentiment Volatility Overlay", "Ticker Stream Cards", "Signal Confidence Gauges"],
         },
         {
-          layer: "Commerce Engine",
-          components: ["Cart Reconciliation", "Pricing Engine", "Order Lifecycle Handler"],
+          layer: "NLP Intelligence Core",
+          components: ["Financial News Scraper/Webhook", "Sentiment Polarity Engine", "Weighted Impact Scorer"],
         },
         {
-          layer: "Persistence",
-          components: ["Product Index", "User Accounts", "Order Ledger"],
+          layer: "Data & Ingestion Pipeline",
+          components: ["Stock Price WebSocket Stream", "Time-Series Ledger", "Signal Dispatch Engine"],
         },
       ],
       engineeringDecisions: [
-        "Leveraged optimistic UI updates for cart modifications to ensure zero perceivable latency.",
-        "Separated public catalog queries from transactional order processing pipelines.",
+        "Leveraged fine-tuned financial NLP sentiment scoring rather than generic polarity dictionaries to accurately parse financial jargon (e.g. 'hawkish', 'short squeeze', 'rate cuts').",
+        "Decoupled news ingestion from the charting interface using WebSockets to ensure sub-second UI updates without polling overhead.",
       ],
       challenges: [
-        "Preventing race conditions when cart items are updated across multiple browser tabs.",
-        "Ensuring idempotent order creation to prevent duplicate billing.",
+        "Filtering noise, duplicate wire reports, and conflicting headlines within tight trading windows.",
+        "Calculating accurate cross-correlation time lags between news publication and ticker volume spikes.",
       ],
       futureRoadmap: [
-        "Real-time stock reservation using Redis Pub/Sub.",
-        "Personalized product recommendation algorithms.",
+        "Multi-asset portfolio risk scoring.",
+        "Autonomous algorithmic backtesting engine against historical earnings releases.",
       ],
     },
     universeCoordinates: {
       orbit: 2,
-      angle: 190,
-      color: "#00E5FF",
+      angle: 40,
+      color: "#32D583",
+    },
+  },
+  {
+    id: "yaadon-ki-duniya",
+    name: "Yaadon Ki Duniya",
+    codename: "NOSTALGIA_ARCHIVE",
+    tagline: "A Nostalgic Web Experience of Old Indian Memories",
+    description:
+      "A nostalgic web experience that brings old Indian memories to life through music, ambient sounds, and immersive visuals.",
+    category: "Full-Stack Platforms",
+    status: "COMPLETED",
+    featured: true,
+    technologies: ["React", "Next.js", "Web Audio API", "Tailwind CSS", "Framer Motion", "Audio Spatialization"],
+    role: "Creative Frontend & Audio Systems Engineer",
+    year: "2025",
+    links: {
+      github: "https://github.com/indrajitkumar23541-a11y/Yaadon_Ki_Duniya",
+      live: "https://github.com/indrajitkumar23541-a11y/Yaadon_Ki_Duniya",
+      demo: "#",
+    },
+    metrics: [
+      { label: "Experience", value: "Indian Nostalgia Audio-Visual" },
+      { label: "Audio Engine", value: "Web Audio Spatializer" },
+      { label: "Aesthetic", value: "Vintage Memory Matrix" },
+    ],
+    caseStudy: {
+      overview:
+        "Yaadon Ki Duniya is an immersive interactive web experience capturing the warmth and nostalgia of vintage Indian childhoods, classic melodies, monsoon rains, radio tuning, and cultural memories.",
+      problem:
+        "Digital media is fast-paced, transactional, and algorithmically noisy. There is a lack of mindful digital spaces designed specifically for emotional resonance, cultural preservation, and ambient relaxation.",
+      goal:
+        "Design an immersive sensory portal combining multi-layered ambient soundscapes (radio static, tea stall rain, temple bells, train whistles) with vintage visual storytelling.",
+      solution:
+        "Constructed a multi-channel Web Audio spatializer allowing users to blend custom ambient sound layers alongside curated nostalgic melodies, wrapped in a tactile vintage interface.",
+      architectureLayers: [
+        {
+          layer: "Immersive Interface Tier",
+          components: ["Vintage Dial & Tuner Controls", "Memory Postcards", "Ambient Mix Sliders"],
+        },
+        {
+          layer: "Spatial Audio Synthesis",
+          components: ["Web Audio Context Node Graph", "Gain & Filter Envelopes", "Dynamic Soundscape Mixer"],
+        },
+        {
+          layer: "Cultural Asset Matrix",
+          components: ["Audio Stem Registry", "Nostalgic Visual Vignettes", "Localized Sound Libraries"],
+        },
+      ],
+      engineeringDecisions: [
+        "Used modular Web Audio API gain and biquad filter nodes to simulate vintage radio warmth without heavy uncompressed WAV files.",
+        "Designed zero-layout-shift responsive interactions allowing seamless audio continuity during navigation.",
+      ],
+      challenges: [
+        "Handling browser autoplay policy restrictions gracefully across desktop and mobile devices.",
+        "Optimizing multi-track ambient audio layering without exceeding mobile memory and CPU envelopes.",
+      ],
+      futureRoadmap: [
+        "Community memory submission portal.",
+        "3D interactive vintage Indian room exploration with Three.js.",
+      ],
+    },
+    universeCoordinates: {
+      orbit: 2,
+      angle: 220,
+      color: "#FFB000",
     },
   },
   {

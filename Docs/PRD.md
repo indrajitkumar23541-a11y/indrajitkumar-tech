@@ -884,9 +884,9 @@ Possible projects:
 
 ```text
 PRAGO
-KLYRO
-ARXON AI
 INDRA-MARKETMIND
+YAADON KI DUNIYA
+ARXON AI
 VELOCITY X
 ASTRAVIEW
 ```
@@ -979,27 +979,12 @@ Healthcare claims must not be exaggerated.
 
 ---
 
-# 37. KLYRO
+# 37. INDRA-MARKETMIND & YAADON KI DUNIYA
 
-KLYRO is an e-commerce platform project.
+INDRA-MARKETMIND is an AI-powered financial market sentiment intelligence platform.
+Correlating live financial news sentiment with stock price volatility to emit real-time market trend signals.
 
-Potential architecture:
-
-```text
-Frontend
-   ↓
-API Gateway
-   ↓
-Identity
-   ↓
-Backend Services
-   ↓
-Orders
-   ↓
-Database
-```
-
-Only implemented services should be shown as implemented.
+YAADON KI DUNIYA is a nostalgic web experience that brings old Indian memories to life through music, ambient sounds, and immersive visuals.
 
 ---
 
@@ -1130,7 +1115,7 @@ Example:
 React
 USED IN
 PraGo
-KLYRO
+Yaadon Ki Duniya
 INDRA OS
 ```
 

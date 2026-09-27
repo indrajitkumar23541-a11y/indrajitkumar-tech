@@ -838,7 +838,7 @@ Project Universe visually represents projects as nodes.
 Arxon AI ● —— ARXON CORE —— ● PraGo
                        |
                        |
-                    KLYRO
+               Indra-MarketMind
                        |
                        ●
                   Velocity X

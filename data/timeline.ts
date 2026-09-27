@@ -26,13 +26,13 @@ export const missionLogData: MissionLogEntry[] = [
     codename: "ENTERPRISE_FOUNDATIONS",
     category: "engineering",
     summary:
-      "Engineered comprehensive full-stack platforms including PraGo (Healthcare) and KLYRO (E-Commerce), and initiated 3D simulation research.",
+      "Engineered full-stack and AI intelligence systems including Indra-MarketMind (FinBERT Sentiment Intelligence), PraGo (Healthcare), and Yaadon Ki Duniya (Nostalgic Audio Experience).",
     details: [
+      "Engineered Indra-MarketMind correlating real-time financial news sentiment with stock price volatility via FinBERT and WebSockets.",
       "Built PraGo multi-role telemedicine coordination system with authenticated REST APIs and relational MySQL schemas.",
-      "Developed KLYRO e-commerce platform with sub-second catalog filtering and transaction workflows.",
-      "Conducted 3D WebGL graphics and physics experiments in Velocity X and Astraview.",
+      "Developed Yaadon Ki Duniya bringing vintage Indian memories alive through ambient soundscapes and retro aesthetics.",
     ],
-    tags: ["React", "Node.js", "Express", "MySQL", "Three.js", "REST APIs"],
+    tags: ["Next.js", "Python", "FinBERT", "React", "Node.js", "MySQL", "WebSockets"],
     status: "Completed",
   },
   {
