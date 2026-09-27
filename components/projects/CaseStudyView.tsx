@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Project } from "@/types";
 import { projectsData } from "@/data";
 import { sound } from "@/lib/sound";
+import { telemetry } from "@/lib/telemetry";
 import { GithubIcon } from "@/components/ui/Icons";
 import {
   ArrowLeft,
@@ -37,6 +38,15 @@ export function CaseStudyView({ project }: CaseStudyViewProps) {
     currentIndex > 0 ? projectsData[currentIndex - 1] : projectsData[projectsData.length - 1];
   const nextProject =
     currentIndex < projectsData.length - 1 ? projectsData[currentIndex + 1] : projectsData[0];
+
+  // Track case study open event
+  useEffect(() => {
+    telemetry.track("case_study_opened", {
+      projectId: project.id,
+      projectName: project.name,
+      category: project.category,
+    });
+  }, [project.id, project.name, project.category]);
 
   const handleCopyLink = () => {
     sound.playClick();

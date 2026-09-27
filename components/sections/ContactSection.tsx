@@ -5,6 +5,7 @@ import { profileData } from "@/data";
 import { Send, Mail, Code, FileDown, CheckCircle2, AlertCircle } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/Icons";
 import { sound } from "@/lib/sound";
+import { telemetry } from "@/lib/telemetry";
 
 export function ContactSection() {
   const [formData, setFormData] = useState({
@@ -47,6 +48,7 @@ export function ContactSection() {
       sound.playChime();
       setStatus("SUCCESS");
       setTransmissionReceipt(data.transmissionId || "LOGGED");
+      telemetry.track("contact_dispatched", { transmissionId: data.transmissionId });
       setFormData({ name: "", email: "", subject: "", message: "", hp: "" });
     } catch {
       sound.playAlert();
@@ -164,7 +166,10 @@ export function ContactSection() {
             <a
               href="/resume.pdf"
               download="Indrajit_Kumar_Resume.pdf"
-              onClick={() => sound.playChime()}
+              onClick={() => {
+                sound.playChime();
+                telemetry.track("resume_downloaded");
+              }}
               className="px-4 py-2 rounded-xl bg-[#FFB000] text-[#050608] hover:bg-[#E09B00] font-mono font-bold text-xs flex items-center gap-1.5 transition-colors shadow-[0_0_12px_rgba(255,176,0,0.25)]"
             >
               <FileDown className="w-3.5 h-3.5" />

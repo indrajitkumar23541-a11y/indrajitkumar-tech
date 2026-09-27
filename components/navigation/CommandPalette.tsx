@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { systemCommands } from "@/data";
 import { projectsData } from "@/data";
 import { SystemCommand } from "@/types";
+import { telemetry } from "@/lib/telemetry";
 import { Search, X, Terminal, CornerDownLeft, Sparkles, FolderGit2 } from "lucide-react";
 
 interface CommandPaletteProps {
@@ -49,6 +50,7 @@ export function CommandPalette({ isOpen, onClose, onSelectAction }: CommandPalet
   const handleExecute = useCallback(
     (item: SystemCommand) => {
       onClose();
+      telemetry.track("command_executed", { commandId: item.id, commandName: item.name });
       if (item.actionType === "navigate" && item.payload) {
         if (item.payload.startsWith("/")) {
           window.location.href = item.payload;

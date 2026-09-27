@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { profileData, projectsData, dsaProfile } from "@/data";
 import { ArxonState } from "@/types";
 import { sound } from "@/lib/sound";
+import { telemetry } from "@/lib/telemetry";
 import { ArxonCore } from "@/components/core/ArxonCore";
 import { Sparkles, Terminal, Send, Volume2, VolumeX, Mic, MicOff, Radio } from "lucide-react";
 
@@ -191,6 +192,7 @@ export function ArxonSection() {
       try {
         setQuery("");
         recognitionRef.current.start();
+        telemetry.track("voice_input_triggered");
       } catch {
         setIsListening(false);
         setArxonState("IDLE");
