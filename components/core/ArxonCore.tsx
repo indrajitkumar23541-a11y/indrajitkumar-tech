@@ -32,22 +32,41 @@ export function ArxonCore({ state, size = "md", onClick }: ArxonCoreProps) {
       ctx.save();
       ctx.beginPath();
       ctx.arc(cx, cy, baseRadius, 0, Math.PI * 2);
-      ctx.strokeStyle = state === "ERROR" ? "#FF5C5C" : state === "THINKING" ? "#FFB000" : "#00E5FF";
-      ctx.lineWidth = 1.5;
-      ctx.globalAlpha = state === "THINKING" ? 0.8 : 0.4;
+      ctx.strokeStyle =
+        state === "ERROR"
+          ? "#FF5C5C"
+          : state === "THINKING"
+          ? "#FFB000"
+          : state === "LISTENING"
+          ? "#32D583"
+          : "#00E5FF";
+      ctx.lineWidth = state === "LISTENING" ? 2.5 : 1.5;
+      ctx.globalAlpha = state === "THINKING" || state === "LISTENING" ? 0.9 : 0.4;
       ctx.stroke();
 
       // Rotating dashed reticle
       ctx.beginPath();
       ctx.setLineDash([4, 6]);
       ctx.arc(cx, cy, baseRadius + 10, angle, angle + Math.PI * 2);
-      ctx.strokeStyle = state === "THINKING" ? "#FFB000" : "#00E5FF";
-      ctx.globalAlpha = 0.5;
+      ctx.strokeStyle =
+        state === "THINKING"
+          ? "#FFB000"
+          : state === "LISTENING"
+          ? "#32D583"
+          : "#00E5FF";
+      ctx.globalAlpha = state === "LISTENING" ? 0.8 : 0.5;
       ctx.stroke();
       ctx.restore();
 
       // Draw pulsing center nodes
-      const pulseMultiplier = state === "THINKING" ? 4 : state === "RESPONDING" ? 2 : 1;
+      const pulseMultiplier =
+        state === "THINKING"
+          ? 4
+          : state === "LISTENING"
+          ? 3.5
+          : state === "RESPONDING"
+          ? 2
+          : 1;
       angle += 0.02 * pulseMultiplier;
 
       animId = requestAnimationFrame(render);

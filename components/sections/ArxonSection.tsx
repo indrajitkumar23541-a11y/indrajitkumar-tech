@@ -1,16 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { profileData, projectsData, dsaProfile } from "@/data";
 import { ArxonState } from "@/types";
 import { sound } from "@/lib/sound";
 import { ArxonCore } from "@/components/core/ArxonCore";
-import { Sparkles, Terminal, Send, Volume2, VolumeX } from "lucide-react";
+import { Sparkles, Terminal, Send, Volume2, VolumeX, Mic, MicOff, Radio } from "lucide-react";
 
 export function ArxonSection() {
   const [query, setQuery] = useState("");
   const [arxonState, setArxonState] = useState<ArxonState>("IDLE");
   const [voiceSpeechEnabled, setVoiceSpeechEnabled] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState(false);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const recognitionRef = useRef<any>(null);
+
   const [messages, setMessages] = useState<
     { role: "user" | "arxon"; text: string; timestamp: string }[]
   >([
@@ -29,66 +35,140 @@ export function ArxonSection() {
     "How can I contact Indrajit?",
   ];
 
-  const speakText = (text: string) => {
-    if (!voiceSpeechEnabled || typeof window === "undefined" || !("speechSynthesis" in window)) return;
-    try {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 1.05;
-      utterance.pitch = 0.95;
-      utterance.onend = () => setArxonState("IDLE");
-      window.speechSynthesis.speak(utterance);
-    } catch {
-      // Speech synthesis failed
+  const speakText = useCallback(
+    (text: string) => {
+      if (!voiceSpeechEnabled || typeof window === "undefined" || !("speechSynthesis" in window)) return;
+      try {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 1.05;
+        utterance.pitch = 0.95;
+        utterance.onend = () => setArxonState("IDLE");
+        window.speechSynthesis.speak(utterance);
+      } catch {
+        // Speech synthesis failed
+      }
+    },
+    [voiceSpeechEnabled]
+  );
+
+  const handleSend = useCallback(
+    (textToSend?: string) => {
+      const q = (textToSend || query).trim();
+      if (!q) return;
+
+      sound.playClick();
+      const time = new Date().toLocaleTimeString();
+      setMessages((prev) => [...prev, { role: "user" as const, text: q, timestamp: time }]);
+      setQuery("");
+      setArxonState("THINKING");
+
+      setTimeout(() => {
+        let reply = "";
+        const lower = q.toLowerCase();
+
+        if (lower.includes("skill") || lower.includes("competenc") || lower.includes("tech")) {
+          reply = `Indrajit specializes in Full-Stack Web Development, Backend Architectures, and Algorithmic Systems. Core stack: C++, JavaScript, TypeScript, Next.js (App Router), React, Node.js, Express, MySQL, Redis, and Tailwind CSS, backed by deep DSA mastery.`;
+        } else if (lower.includes("prago") || lower.includes("health")) {
+          const pragoProject = projectsData.find((p) => p.id === "prago");
+          reply = `PraGo is an intelligent healthcare and telemedicine management system (${pragoProject?.tagline || ""}) engineered by Indrajit using React, Node.js, Express, and MySQL. It features role-based access control across patients, practitioners, and pharmacies.`;
+        } else if (lower.includes("dsa") || lower.includes("problem") || lower.includes("leetcode")) {
+          reply = `Indrajit has solved ${dsaProfile.totalSolved}+ algorithmic problems, primarily in modern C++ across LeetCode and competitive coding platforms, with advanced mastery in Dynamic Programming, Trees, Graphs (Dijkstra/Topological), Heaps, and Binary Search.`;
+        } else if (lower.includes("degree") || lower.includes("education") || lower.includes("college") || lower.includes("b.tech")) {
+          reply = `Indrajit is pursuing a Bachelor of Technology (B.Tech) in Computer Science and Engineering (2023 – 2027), maintaining a rigorous focus on Computer Science foundations, Distributed Systems, and Operating Systems.`;
+        } else if (lower.includes("contact") || lower.includes("email") || lower.includes("hire") || lower.includes("reach")) {
+          reply = `You can establish connection with Indrajit directly via email at ${profileData.socials.email.url.replace("mailto:", "")}, or connect professionally on LinkedIn (${profileData.socials.linkedin.url}) and GitHub (${profileData.socials.github.url}).`;
+        } else if (lower.includes("klyro") || lower.includes("commerce")) {
+          reply = `KLYRO is a high-performance e-commerce platform built by Indrajit using Next.js, React, Node.js, and Tailwind CSS, featuring sub-second catalog filtering, optimistic cart state, and transactional order workflows.`;
+        } else {
+          reply = `Command received. Indrajit Kumar is a Full-Stack Developer & AI Builder (B.Tech CSE 2023–2027) with 380+ DSA problems solved. For details on any project or skill, ask about PraGo, KLYRO, INDRA OS, or DSA.`;
+        }
+
+        sound.playPulse();
+        setArxonState("RESPONDING");
+        setMessages((prev) => [
+          ...prev,
+          { role: "arxon", text: reply, timestamp: new Date().toLocaleTimeString() },
+        ]);
+
+        if (voiceSpeechEnabled) {
+          speakText(reply);
+        } else {
+          setTimeout(() => setArxonState("IDLE"), 600);
+        }
+      }, 450);
+    },
+    [query, voiceSpeechEnabled, speakText]
+  );
+
+  // Initialize Speech Recognition capability check
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+
+    if (typeof window !== "undefined") {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        timer = setTimeout(() => {
+          setSpeechSupported(true);
+        }, 0);
+
+        const recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.lang = "en-US";
+
+        recognition.onstart = () => {
+          setIsListening(true);
+          setArxonState("LISTENING");
+          sound.playChime();
+        };
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        recognition.onresult = (event: any) => {
+          const transcript = Array.from(event.results)
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            .map((res: any) => res[0].transcript)
+            .join("");
+          setQuery(transcript);
+
+          // If speech finished
+          if (event.results[0]?.isFinal) {
+            recognition.stop();
+            setIsListening(false);
+            if (transcript.trim()) {
+              handleSend(transcript);
+            } else {
+              setArxonState("IDLE");
+            }
+          }
+        };
+
+        recognition.onerror = () => {
+          setIsListening(false);
+          setArxonState("IDLE");
+        };
+
+        recognition.onend = () => {
+          setIsListening(false);
+          setArxonState((prev) => (prev === "LISTENING" ? "IDLE" : prev));
+        };
+
+        recognitionRef.current = recognition;
+      }
     }
-  };
 
-  const handleSend = (textToSend?: string) => {
-    const q = (textToSend || query).trim();
-    if (!q) return;
-
-    sound.playClick();
-    const time = new Date().toLocaleTimeString();
-    const newMessages = [...messages, { role: "user" as const, text: q, timestamp: time }];
-    setMessages(newMessages);
-    setQuery("");
-    setArxonState("THINKING");
-
-    setTimeout(() => {
-      let reply = "";
-      const lower = q.toLowerCase();
-
-      if (lower.includes("skill") || lower.includes("competenc") || lower.includes("tech")) {
-        reply = `Indrajit specializes in Full-Stack Web Development, Backend Architectures, and Algorithmic Systems. Core stack: C++, JavaScript, TypeScript, Next.js (App Router), React, Node.js, Express, MySQL, Redis, and Tailwind CSS, backed by deep DSA mastery.`;
-      } else if (lower.includes("prago") || lower.includes("health")) {
-        const pragoProject = projectsData.find((p) => p.id === "prago");
-        reply = `PraGo is an intelligent healthcare and telemedicine management system (${pragoProject?.tagline || ""}) engineered by Indrajit using React, Node.js, Express, and MySQL. It features role-based access control across patients, practitioners, and pharmacies.`;
-      } else if (lower.includes("dsa") || lower.includes("problem") || lower.includes("leetcode")) {
-        reply = `Indrajit has solved ${dsaProfile.totalSolved}+ algorithmic problems, primarily in modern C++ across LeetCode and competitive coding platforms, with advanced mastery in Dynamic Programming, Trees, Graphs (Dijkstra/Topological), Heaps, and Binary Search.`;
-      } else if (lower.includes("degree") || lower.includes("education") || lower.includes("college") || lower.includes("b.tech")) {
-        reply = `Indrajit is pursuing a Bachelor of Technology (B.Tech) in Computer Science and Engineering (2023 – 2027), maintaining a rigorous focus on Computer Science foundations, Distributed Systems, and Operating Systems.`;
-      } else if (lower.includes("contact") || lower.includes("email") || lower.includes("hire") || lower.includes("reach")) {
-        reply = `You can establish connection with Indrajit directly via email at ${profileData.socials.email.url.replace("mailto:", "")}, or connect professionally on LinkedIn (${profileData.socials.linkedin.url}) and GitHub (${profileData.socials.github.url}).`;
-      } else if (lower.includes("klyro") || lower.includes("commerce")) {
-        reply = `KLYRO is a high-performance e-commerce platform built by Indrajit using Next.js, React, Node.js, and Tailwind CSS, featuring sub-second catalog filtering, optimistic cart state, and transactional order workflows.`;
-      } else {
-        reply = `Command received. Indrajit Kumar is a Full-Stack Developer & AI Builder (B.Tech CSE 2023–2027) with 380+ DSA problems solved. For details on any project or skill, ask about PraGo, KLYRO, INDRA OS, or DSA.`;
+    return () => {
+      if (timer) clearTimeout(timer);
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.abort();
+        } catch {
+          // ignore cleanup abort errors
+        }
       }
-
-      sound.playPulse();
-      setArxonState("RESPONDING");
-      setMessages((prev) => [
-        ...prev,
-        { role: "arxon", text: reply, timestamp: new Date().toLocaleTimeString() },
-      ]);
-
-      if (voiceSpeechEnabled) {
-        speakText(reply);
-      } else {
-        setTimeout(() => setArxonState("IDLE"), 600);
-      }
-    }, 450);
-  };
+    };
+  }, [handleSend]);
 
   const toggleVoiceSpeech = () => {
     const next = !voiceSpeechEnabled;
@@ -96,6 +176,25 @@ export function ArxonSection() {
     sound.playClick();
     if (!next && typeof window !== "undefined" && "speechSynthesis" in window) {
       window.speechSynthesis.cancel();
+    }
+  };
+
+  const toggleVoiceListening = () => {
+    if (!speechSupported || !recognitionRef.current) return;
+    sound.playClick();
+
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+      setArxonState("IDLE");
+    } else {
+      try {
+        setQuery("");
+        recognitionRef.current.start();
+      } catch {
+        setIsListening(false);
+        setArxonState("IDLE");
+      }
     }
   };
 
@@ -117,19 +216,36 @@ export function ArxonSection() {
           </p>
         </div>
 
-        {/* Speech Audio Toggle */}
-        <button
-          onClick={toggleVoiceSpeech}
-          className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border font-mono text-xs transition-all ${
-            voiceSpeechEnabled
-              ? "bg-[#00E5FF]/15 text-[#00E5FF] border-[#00E5FF] shadow-[0_0_12px_rgba(0,229,255,0.25)]"
-              : "bg-[#0D1218] text-[#A6B0BC] border-[#24303A] hover:border-[#41515F]"
-          }`}
-          title="Toggle synthetic voice audio narration"
-        >
-          {voiceSpeechEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
-          <span>{voiceSpeechEnabled ? "VOICE SYNTHESIS: ON" : "VOICE SYNTHESIS: OFF"}</span>
-        </button>
+        {/* Audio Controls */}
+        <div className="flex items-center gap-2">
+          {speechSupported && (
+            <button
+              onClick={toggleVoiceListening}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border font-mono text-xs transition-all ${
+                isListening
+                  ? "bg-[#32D583]/20 text-[#32D583] border-[#32D583] shadow-[0_0_15px_rgba(50,213,131,0.35)] animate-pulse font-bold"
+                  : "bg-[#0D1218] text-[#A6B0BC] border-[#24303A] hover:border-[#32D583]/60 hover:text-[#32D583]"
+              }`}
+              title="Click to speak with ARXON"
+            >
+              {isListening ? <Mic className="w-3.5 h-3.5" /> : <MicOff className="w-3.5 h-3.5" />}
+              <span>{isListening ? "LISTENING..." : "VOICE INPUT: READY"}</span>
+            </button>
+          )}
+
+          <button
+            onClick={toggleVoiceSpeech}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border font-mono text-xs transition-all ${
+              voiceSpeechEnabled
+                ? "bg-[#00E5FF]/15 text-[#00E5FF] border-[#00E5FF] shadow-[0_0_12px_rgba(0,229,255,0.25)]"
+                : "bg-[#0D1218] text-[#A6B0BC] border-[#24303A] hover:border-[#41515F]"
+            }`}
+            title="Toggle synthetic voice audio narration"
+          >
+            {voiceSpeechEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+            <span>{voiceSpeechEnabled ? "SPEECH: ON" : "SPEECH: OFF"}</span>
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -163,6 +279,12 @@ export function ArxonSection() {
             <div className="flex justify-between text-[#66717D]">
               <span>HALLUCINATION RISK:</span>
               <span className="text-[#32D583]">0.0% (Grounded)</span>
+            </div>
+            <div className="flex justify-between text-[#66717D]">
+              <span>VOICE RECOGNITION:</span>
+              <span className={speechSupported ? "text-[#32D583]" : "text-[#A6B0BC]"}>
+                {speechSupported ? (isListening ? "LISTENING" : "ENABLED") : "UNSUPPORTED"}
+              </span>
             </div>
             <div className="flex justify-between text-[#66717D]">
               <span>RESPONSE LATENCY:</span>
@@ -210,6 +332,12 @@ export function ArxonSection() {
                 <div>{m.text}</div>
               </div>
             ))}
+            {isListening && (
+              <div className="p-3 rounded-xl bg-[#050608] border border-[#32D583]/50 text-[#32D583] font-mono text-xs flex items-center gap-2 max-w-[80%] animate-pulse">
+                <Radio className="w-4 h-4 text-[#32D583] animate-pulse" />
+                <span>VOICE RECEIVER ACTIVE: Speak now, transcript will stream...</span>
+              </div>
+            )}
             {arxonState === "THINKING" && (
               <div className="p-3 rounded-xl bg-[#050608] border border-[#24303A] text-[#00E5FF] font-mono text-xs flex items-center gap-2 max-w-[65%]">
                 <span className="w-2 h-2 rounded-full bg-[#00E5FF] animate-ping" />
@@ -232,7 +360,7 @@ export function ArxonSection() {
             ))}
           </div>
 
-          {/* Input Box */}
+          {/* Input Box with Microphone Toggle */}
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -244,9 +372,29 @@ export function ArxonSection() {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Ask ARXON about Indrajit's engineering, projects, or background..."
-              className="flex-1 bg-[#050608] border border-[#24303A] rounded-xl px-4 py-2.5 text-xs font-mono text-[#F5F7FA] placeholder-[#66717D] focus:outline-none focus:border-[#00E5FF]"
+              placeholder={isListening ? "Listening to your voice..." : "Ask ARXON or click mic to speak..."}
+              className={`flex-1 bg-[#050608] border rounded-xl px-4 py-2.5 text-xs font-mono text-[#F5F7FA] placeholder-[#66717D] focus:outline-none transition-colors ${
+                isListening
+                  ? "border-[#32D583] shadow-[0_0_12px_rgba(50,213,131,0.2)]"
+                  : "border-[#24303A] focus:border-[#00E5FF]"
+              }`}
             />
+
+            {speechSupported && (
+              <button
+                type="button"
+                onClick={toggleVoiceListening}
+                className={`p-2.5 rounded-xl border text-xs font-mono transition-all flex items-center justify-center ${
+                  isListening
+                    ? "bg-[#32D583] text-[#050608] border-[#32D583] shadow-[0_0_15px_rgba(50,213,131,0.4)] font-bold"
+                    : "bg-[#050608] text-[#A6B0BC] hover:text-[#32D583] border-[#24303A] hover:border-[#32D583]/50"
+                }`}
+                title={isListening ? "Stop voice listening" : "Start speaking voice command"}
+              >
+                <Mic className="w-4 h-4" />
+              </button>
+            )}
+
             <button
               type="submit"
               className="px-4 py-2.5 rounded-xl bg-[#00E5FF] text-[#050608] font-mono font-bold text-xs hover:bg-[#00C4DB] transition-colors flex items-center gap-1.5"

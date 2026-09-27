@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import { profileData } from "@/data";
-import { Send, Mail, Code, FileDown, CheckCircle2 } from "lucide-react";
+import { Send, Mail, Code, FileDown, CheckCircle2, AlertCircle } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/Icons";
+import { sound } from "@/lib/sound";
 
 export function ContactSection() {
   const [formData, setFormData] = useState({
@@ -11,18 +12,47 @@ export function ContactSection() {
     email: "",
     subject: "",
     message: "",
+    hp: "", // Honeypot field
   });
-  const [status, setStatus] = useState<"IDLE" | "TRANSMITTING" | "SUCCESS">("IDLE");
+  const [status, setStatus] = useState<"IDLE" | "TRANSMITTING" | "SUCCESS" | "ERROR">("IDLE");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [transmissionReceipt, setTransmissionReceipt] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
 
+    sound.playClick();
     setStatus("TRANSMITTING");
-    setTimeout(() => {
+    setErrorMessage("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        sound.playAlert();
+        setStatus("ERROR");
+        setErrorMessage(data.error || "Transmission rejected by system gateway.");
+        return;
+      }
+
+      sound.playChime();
       setStatus("SUCCESS");
-      setFormData({ name: "", email: "", subject: "", message: "" });
-    }, 600);
+      setTransmissionReceipt(data.transmissionId || "LOGGED");
+      setFormData({ name: "", email: "", subject: "", message: "", hp: "" });
+    } catch {
+      sound.playAlert();
+      setStatus("ERROR");
+      setErrorMessage("Network transmission error. Please reach out directly via email.");
+    }
   };
 
   return (
@@ -52,6 +82,7 @@ export function ContactSection() {
 
             <a
               href={profileData.socials.email.url}
+              onClick={() => sound.playClick()}
               className="flex items-center justify-between p-3.5 rounded-xl bg-[#111820] border border-[#24303A] hover:border-[#FFB000] transition-colors group"
             >
               <div className="flex items-center gap-3">
@@ -70,6 +101,7 @@ export function ContactSection() {
               href={profileData.socials.github.url}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => sound.playClick()}
               className="flex items-center justify-between p-3.5 rounded-xl bg-[#111820] border border-[#24303A] hover:border-[#FFB000] transition-colors group"
             >
               <div className="flex items-center gap-3">
@@ -88,6 +120,7 @@ export function ContactSection() {
               href={profileData.socials.linkedin.url}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => sound.playClick()}
               className="flex items-center justify-between p-3.5 rounded-xl bg-[#111820] border border-[#24303A] hover:border-[#FFB000] transition-colors group"
             >
               <div className="flex items-center gap-3">
@@ -106,6 +139,7 @@ export function ContactSection() {
               href={profileData.socials.leetcode.url}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => sound.playClick()}
               className="flex items-center justify-between p-3.5 rounded-xl bg-[#111820] border border-[#24303A] hover:border-[#FFB000] transition-colors group"
             >
               <div className="flex items-center gap-3">
@@ -129,7 +163,9 @@ export function ContactSection() {
             </div>
             <a
               href="/resume.pdf"
-              className="px-4 py-2 rounded-xl bg-[#FFB000] text-[#050608] hover:bg-[#E09B00] font-mono font-bold text-xs flex items-center gap-1.5 transition-colors"
+              download="Indrajit_Kumar_Resume.pdf"
+              onClick={() => sound.playChime()}
+              className="px-4 py-2 rounded-xl bg-[#FFB000] text-[#050608] hover:bg-[#E09B00] font-mono font-bold text-xs flex items-center gap-1.5 transition-colors shadow-[0_0_12px_rgba(255,176,0,0.25)]"
             >
               <FileDown className="w-3.5 h-3.5" />
               <span>DOWNLOAD</span>
@@ -141,28 +177,51 @@ export function ContactSection() {
         <div className="lg:col-span-7 p-6 sm:p-8 rounded-2xl bg-[#0D1218] border border-[#24303A]">
           <h3 className="text-xs font-mono font-bold text-[#F5F7FA] uppercase tracking-wider mb-6 flex items-center justify-between">
             <span>TRANSMIT DISPATCH</span>
-            <span className="text-[#32D583] text-[11px] font-normal">CHANNEL OPEN</span>
+            <span className="text-[#32D583] text-[11px] font-normal flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-[#32D583] animate-pulse" />
+              CHANNEL ONLINE
+            </span>
           </h3>
 
           {status === "SUCCESS" ? (
             <div className="p-8 rounded-xl bg-[#111820] border border-[#32D583]/50 text-center space-y-3 font-mono">
               <CheckCircle2 className="w-10 h-10 text-[#32D583] mx-auto" />
               <div className="text-sm font-bold text-[#F5F7FA]">TRANSMISSION LOGGED</div>
+              <div className="text-[11px] text-[#00E5FF]">ID: {transmissionReceipt}</div>
               <p className="text-xs text-[#A6B0BC]">
-                Your message has been safely received. Indrajit will respond via email shortly.
+                Your transmission has been securely registered in INDRA OS dispatch queue.
+                Indrajit will review and respond promptly.
               </p>
               <button
                 onClick={() => setStatus("IDLE")}
-                className="mt-4 px-4 py-2 rounded-lg bg-[#050608] text-[#FFB000] border border-[#24303A] text-xs"
+                className="mt-4 px-4 py-2 rounded-lg bg-[#050608] text-[#FFB000] border border-[#24303A] text-xs hover:border-[#FFB000]/60 transition-colors"
               >
                 TRANSMIT ANOTHER MESSAGE
               </button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4 font-mono text-xs">
+              {status === "ERROR" && (
+                <div className="p-3.5 rounded-xl bg-[#FF5C5C]/10 border border-[#FF5C5C]/40 text-[#FF5C5C] flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <span>{errorMessage}</span>
+                </div>
+              )}
+
+              {/* Honeypot hidden input for spam protection */}
+              <input
+                type="text"
+                name="hp"
+                value={formData.hp}
+                onChange={(e) => setFormData({ ...formData, hp: e.target.value })}
+                className="hidden"
+                tabIndex={-1}
+                autoComplete="off"
+              />
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label htmlFor="contact-name" className="text-[#A6B0BC]">NAME / SENDER</label>
+                  <label htmlFor="contact-name" className="text-[#A6B0BC]">NAME / SENDER *</label>
                   <input
                     id="contact-name"
                     required
@@ -174,7 +233,7 @@ export function ContactSection() {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label htmlFor="contact-email" className="text-[#A6B0BC]">RETURN EMAIL</label>
+                  <label htmlFor="contact-email" className="text-[#A6B0BC]">RETURN EMAIL *</label>
                   <input
                     id="contact-email"
                     required
@@ -188,7 +247,7 @@ export function ContactSection() {
               </div>
 
               <div className="space-y-1.5">
-                <label htmlFor="contact-subject" className="text-[#A6B0BC]">SUBJECT / REASON</label>
+                <label htmlFor="contact-subject" className="text-[#A6B0BC]">SUBJECT / PURPOSE</label>
                 <input
                   id="contact-subject"
                   type="text"
@@ -200,14 +259,14 @@ export function ContactSection() {
               </div>
 
               <div className="space-y-1.5">
-                <label htmlFor="contact-message" className="text-[#A6B0BC]">MESSAGE PAYLOAD</label>
+                <label htmlFor="contact-message" className="text-[#A6B0BC]">MESSAGE PAYLOAD *</label>
                 <textarea
                   id="contact-message"
                   required
                   rows={4}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  placeholder="Provide transmission details..."
+                  placeholder="Provide transmission details (minimum 10 characters)..."
                   className="w-full bg-[#111820] border border-[#24303A] rounded-xl px-4 py-3 text-xs text-[#F5F7FA] placeholder-[#66717D] focus:outline-none focus:border-[#FFB000] resize-none"
                 />
               </div>
@@ -219,7 +278,7 @@ export function ContactSection() {
               >
                 <Send className="w-4 h-4" />
                 <span>
-                  {status === "TRANSMITTING" ? "SENDING TRANSMISSION..." : "SEND TRANSMISSION"}
+                  {status === "TRANSMITTING" ? "TRANSMITTING DISPATCH..." : "DISPATCH TRANSMISSION"}
                 </span>
               </button>
             </form>

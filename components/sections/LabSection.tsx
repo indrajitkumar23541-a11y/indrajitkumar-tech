@@ -1,12 +1,16 @@
 "use client";
 
 import React from "react";
-import { FlaskConical } from "lucide-react";
+import Link from "next/link";
+import { FlaskConical, ArrowUpRight } from "lucide-react";
+import { LabSandbox } from "@/components/lab/LabSandbox";
+import { sound } from "@/lib/sound";
 
 export function LabSection() {
   const labExperiments = [
     {
       id: "exp-01",
+      slug: "velocity-x",
       title: "Velocity X — 3D Rigid Body Sandbox",
       category: "3D & Physics",
       status: "R&D Prototype",
@@ -17,6 +21,7 @@ export function LabSection() {
     },
     {
       id: "exp-02",
+      slug: "astraview",
       title: "Astraview — Orbital Ephemeris HUD",
       category: "Spatial Telemetry",
       status: "Experimental",
@@ -27,6 +32,7 @@ export function LabSection() {
     },
     {
       id: "exp-03",
+      slug: "indra-os",
       title: "Neural Reticle — Visual State Feedback",
       category: "AI & Interfaces",
       status: "Integrated in OS",
@@ -40,7 +46,7 @@ export function LabSection() {
   return (
     <section id="lab" aria-label="INDRA Lab" className="py-20 border-t border-[#24303A]">
       {/* Section Header */}
-      <div className="mb-12">
+      <div className="mb-10">
         <div className="flex items-center gap-2 text-xs font-mono text-[#FFB000] tracking-widest uppercase mb-1">
           <FlaskConical className="w-3.5 h-3.5" />
           <span>04 // EXPERIMENTAL RESEARCH</span>
@@ -54,6 +60,12 @@ export function LabSection() {
         </p>
       </div>
 
+      {/* Interactive Sandbox Telemetry Viewport */}
+      <div className="mb-12">
+        <LabSandbox />
+      </div>
+
+      {/* Experiment Specification Matrix */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {labExperiments.map((exp) => (
           <div
@@ -74,7 +86,14 @@ export function LabSection() {
               </div>
 
               <h3 className="text-lg font-bold font-mono text-[#F5F7FA] group-hover:text-[#FFB000] transition-colors">
-                {exp.title}
+                <Link
+                  href={`/projects/${exp.slug}`}
+                  onClick={() => sound.playClick()}
+                  className="hover:underline flex items-center justify-between"
+                >
+                  <span>{exp.title}</span>
+                  <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-[#FFB000]" />
+                </Link>
               </h3>
               <p className="text-xs text-[#A6B0BC] mt-3 leading-relaxed">
                 {exp.objective}
