@@ -21,11 +21,11 @@ export function CommandPalette({ isOpen, onClose, onSelectAction }: CommandPalet
     () =>
       projectsData.map((project) => ({
         id: `project-${project.id}`,
-        name: `Project: ${project.name}`,
-        description: project.tagline,
+        name: `Case Study: ${project.name}`,
+        description: `${project.tagline} — In-depth architectural case study`,
         category: "projects",
         actionType: "navigate",
-        payload: `#projects`,
+        payload: `/projects/${project.id}`,
         icon: "folder",
       })),
     []
@@ -50,9 +50,17 @@ export function CommandPalette({ isOpen, onClose, onSelectAction }: CommandPalet
     (item: SystemCommand) => {
       onClose();
       if (item.actionType === "navigate" && item.payload) {
-        window.location.hash = item.payload;
+        if (item.payload.startsWith("/")) {
+          window.location.href = item.payload;
+        } else {
+          window.location.hash = item.payload;
+        }
       } else if (item.actionType === "link" && item.payload) {
-        window.open(item.payload, "_blank", "noopener,noreferrer");
+        if (item.payload.startsWith("/")) {
+          window.location.href = item.payload;
+        } else {
+          window.open(item.payload, "_blank", "noopener,noreferrer");
+        }
       } else if (item.actionType === "action" && item.payload && onSelectAction) {
         onSelectAction(item.payload);
       } else if (item.actionType === "arxon") {

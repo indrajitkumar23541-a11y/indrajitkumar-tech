@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { projectsData } from "@/data";
 import { Project } from "@/types";
-import { FolderGit2, ExternalLink, BookOpen, X, CheckCircle2, LayoutGrid, Orbit } from "lucide-react";
+import Link from "next/link";
+import { FolderGit2, ExternalLink, BookOpen, X, CheckCircle2, LayoutGrid, Orbit, ArrowUpRight } from "lucide-react";
 import { GithubIcon } from "@/components/ui/Icons";
 import { ProjectUniverse } from "@/components/projects/ProjectUniverse";
 import { sound } from "@/lib/sound";
@@ -126,7 +127,14 @@ export function ProjectsSection() {
                 </div>
 
                 <h3 className="text-xl font-bold font-mono text-[#F5F7FA] group-hover:text-[#FFB000] transition-colors">
-                  {project.name}
+                  <Link
+                    href={`/projects/${project.id}`}
+                    onClick={() => sound.playClick()}
+                    className="hover:underline flex items-center justify-between"
+                  >
+                    <span>{project.name}</span>
+                    <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-[#FFB000]" />
+                  </Link>
                 </h3>
                 <p className="text-xs text-[#FFB000]/90 font-mono mt-1 font-medium">
                   {project.tagline}
@@ -300,29 +308,41 @@ export function ProjectsSection() {
               )}
 
               {/* Action Buttons in Modal */}
-              <div className="pt-4 border-t border-[#24303A] flex items-center justify-end gap-3">
-                {activeModalProject.links.github && (
-                  <a
-                    href={activeModalProject.links.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-4 py-2 rounded-xl bg-[#111820] text-[#F5F7FA] hover:border-[#FFB000] border border-[#24303A] font-mono text-xs flex items-center gap-2"
-                  >
-                    <GithubIcon className="w-4 h-4" />
-                    <span>VIEW REPOSITORY</span>
-                  </a>
-                )}
-                {activeModalProject.links.live && activeModalProject.links.live !== "#" && (
-                  <a
-                    href={activeModalProject.links.live}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-4 py-2 rounded-xl bg-[#FFB000] text-[#050608] hover:bg-[#E09B00] font-mono text-xs font-bold flex items-center gap-2"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                    <span>LIVE DEMO</span>
-                  </a>
-                )}
+              <div className="pt-4 border-t border-[#24303A] flex flex-wrap items-center justify-between gap-3">
+                <Link
+                  href={`/projects/${activeModalProject.id}`}
+                  onClick={() => sound.playClick()}
+                  className="px-4 py-2 rounded-xl bg-[#00E5FF]/10 text-[#00E5FF] hover:bg-[#00E5FF]/20 border border-[#00E5FF]/40 font-mono text-xs flex items-center gap-1.5 transition-colors"
+                >
+                  <BookOpen className="w-3.5 h-3.5" />
+                  <span>FULL SPEC PAGE</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </Link>
+
+                <div className="flex items-center gap-3">
+                  {activeModalProject.links.github && (
+                    <a
+                      href={activeModalProject.links.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 rounded-xl bg-[#111820] text-[#F5F7FA] hover:border-[#FFB000] border border-[#24303A] font-mono text-xs flex items-center gap-2"
+                    >
+                      <GithubIcon className="w-4 h-4" />
+                      <span>VIEW REPOSITORY</span>
+                    </a>
+                  )}
+                  {activeModalProject.links.live && activeModalProject.links.live !== "#" && (
+                    <a
+                      href={activeModalProject.links.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 rounded-xl bg-[#FFB000] text-[#050608] hover:bg-[#E09B00] font-mono text-xs font-bold flex items-center gap-2"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      <span>LIVE DEMO</span>
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
           </div>
