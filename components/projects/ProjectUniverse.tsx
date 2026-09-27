@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { projectsData } from "@/data";
 import { Project } from "@/types";
 import { sound } from "@/lib/sound";
@@ -12,6 +12,14 @@ interface ProjectUniverseProps {
 
 export function ProjectUniverse({ onSelectProject }: ProjectUniverseProps) {
   const [hoveredProject, setHoveredProject] = useState<Project | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Define orbital radii and layout positions
   const centerProject = projectsData.find((p) => p.id === "indra-os") || projectsData[0];
@@ -71,7 +79,7 @@ export function ProjectUniverse({ onSelectProject }: ProjectUniverseProps) {
         {/* Orbiting Satellite Project Nodes */}
         {nodePositions.map(({ project, r, angle }) => {
           if (!project) return null;
-          const responsiveR = typeof window !== "undefined" && window.innerWidth < 640 ? r * 0.6 : r;
+          const responsiveR = isMobile ? r * 0.6 : r;
           const rad = (angle * Math.PI) / 180;
           const x = Math.cos(rad) * responsiveR;
           const y = Math.sin(rad) * responsiveR;

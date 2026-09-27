@@ -5,6 +5,7 @@ import { systemCommands } from "@/data";
 import { projectsData } from "@/data";
 import { SystemCommand } from "@/types";
 import { telemetry } from "@/lib/telemetry";
+import { useRouter } from "next/navigation";
 import { Search, X, Terminal, CornerDownLeft, Sparkles, FolderGit2 } from "lucide-react";
 
 interface CommandPaletteProps {
@@ -14,6 +15,7 @@ interface CommandPaletteProps {
 }
 
 export function CommandPalette({ isOpen, onClose, onSelectAction }: CommandPaletteProps) {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -53,23 +55,33 @@ export function CommandPalette({ isOpen, onClose, onSelectAction }: CommandPalet
       telemetry.track("command_executed", { commandId: item.id, commandName: item.name });
       if (item.actionType === "navigate" && item.payload) {
         if (item.payload.startsWith("/")) {
-          window.location.href = item.payload;
-        } else {
-          window.location.hash = item.payload;
+          router.push(item.payload);
+        } else if (typeof window !== "undefined") {
+          if (window.location.pathname !== "/") {
+            router.push("/" + item.payload);
+          } else {
+            window.location.hash = item.payload;
+          }
         }
       } else if (item.actionType === "link" && item.payload) {
         if (item.payload.startsWith("/")) {
-          window.location.href = item.payload;
-        } else {
+          router.push(item.payload);
+        } else if (typeof window !== "undefined") {
           window.open(item.payload, "_blank", "noopener,noreferrer");
         }
       } else if (item.actionType === "action" && item.payload && onSelectAction) {
         onSelectAction(item.payload);
       } else if (item.actionType === "arxon") {
-        window.location.hash = "#arxon";
+        if (typeof window !== "undefined") {
+          if (window.location.pathname !== "/") {
+            router.push("/#arxon");
+          } else {
+            window.location.hash = "#arxon";
+          }
+        }
       }
     },
-    [onClose, onSelectAction]
+    [onClose, onSelectAction, router]
   );
 
   // Focus input when opened

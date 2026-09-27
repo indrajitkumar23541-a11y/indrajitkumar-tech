@@ -48,12 +48,16 @@ export function CaseStudyView({ project }: CaseStudyViewProps) {
     });
   }, [project.id, project.name, project.category]);
 
-  const handleCopyLink = () => {
+  const handleCopyLink = async () => {
     sound.playClick();
-    if (typeof window !== "undefined") {
-      navigator.clipboard.writeText(window.location.href);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+    if (typeof window !== "undefined" && navigator?.clipboard) {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch (err) {
+        console.error("Failed to copy link to clipboard", err);
+      }
     }
   };
 
