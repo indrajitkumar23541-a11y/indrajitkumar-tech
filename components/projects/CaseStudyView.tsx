@@ -15,7 +15,6 @@ import {
   Layers,
   ShieldCheck,
   Terminal,
-  Orbit,
   Sparkles,
   Workflow,
   ChevronRight,
@@ -66,9 +65,9 @@ export function CaseStudyView({ project }: CaseStudyViewProps) {
           </Link>
 
           <div className="hidden md:flex items-center gap-2 text-xs font-mono text-[#66717D]">
-            <span>//</span>
+            <span>{"//"}</span>
             <span className="text-[#A6B0BC]">SYSTEM ARCHIVES</span>
-            <span>//</span>
+            <span>{"//"}</span>
             <span className="text-[#FFB000] uppercase font-bold">{project.id}</span>
           </div>
         </div>
