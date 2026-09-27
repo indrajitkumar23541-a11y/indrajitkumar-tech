@@ -44,7 +44,7 @@ export default function ErrorBoundary({
             Safe fallback state is active.
           </p>
 
-          <div className="mt-4 p-4 rounded-xl bg-[#050608] border border-[#24303A] text-xs text-[#FF5C5C] font-mono break-words flex items-start gap-2.5">
+          <div className="mt-4 p-4 rounded-xl bg-[#050608] border border-[#24303A] text-xs text-[#FF5C5C] font-mono wrap-break-word flex items-start gap-2.5">
             <Terminal className="w-4 h-4 shrink-0 mt-0.5" />
             <span>{error.message || "An unexpected subsystem anomaly occurred."}</span>
           </div>

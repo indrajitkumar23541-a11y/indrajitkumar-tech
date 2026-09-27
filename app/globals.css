@@ -1,34 +1,6 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-primary: #050608;
-  --color-bg-secondary: #090D12;
-  --color-surface: #0D1218;
-  --color-surface-elevated: #111820;
-  --color-surface-overlay: #151E28;
-
-  --color-border-subtle: #1C2630;
-  --color-border-default: #24303A;
-  --color-border-active: #41515F;
-  --color-border-focus: #5A6E82;
-
-  --color-gold: #FFB000;
-  --color-gold-hover: #E09B00;
-  --color-gold-muted: rgba(255, 176, 0, 0.15);
-  
-  --color-cyan: #00E5FF;
-  --color-cyan-hover: #00C4DB;
-  --color-cyan-muted: rgba(0, 229, 255, 0.15);
-
-  --color-text-primary: #F5F7FA;
-  --color-text-secondary: #A6B0BC;
-  --color-text-muted: #66717D;
-
-  --color-status-online: #32D583;
-  --color-status-warning: #F7B955;
-  --color-status-error: #FF5C5C;
-  --color-status-standby: #66717D;
-
   --font-sans: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: var(--font-geist-mono), "JetBrains Mono", monospace;
 }
@@ -38,13 +10,29 @@
   --bg-secondary: #090D12;
   --surface: #0D1218;
   --surface-elevated: #111820;
+  --surface-overlay: #151E28;
+
+  --border-subtle: #1C2630;
   --border-default: #24303A;
   --border-active: #41515F;
+  --border-focus: #5A6E82;
+
   --gold: #FFB000;
+  --gold-hover: #E09B00;
+  --gold-muted: rgba(255, 176, 0, 0.15);
+
   --cyan: #00E5FF;
+  --cyan-hover: #00C4DB;
+  --cyan-muted: rgba(0, 229, 255, 0.15);
+
   --text-primary: #F5F7FA;
   --text-secondary: #A6B0BC;
   --text-muted: #66717D;
+
+  --status-online: #32D583;
+  --status-warning: #F7B955;
+  --status-error: #FF5C5C;
+  --status-standby: #66717D;
 }
 
 /* Base resets & document defaults */
